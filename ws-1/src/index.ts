@@ -15,6 +15,7 @@ wss.on('connection', function(socket){
     socket.on("message", function(message){
         const messageString = message.toString();
         const messageParse = JSON.parse(messageString)
+        console.log(messageParse);
         if(messageParse.type == "join")
         {
             Allsockets.push({
@@ -33,7 +34,7 @@ wss.on('connection', function(socket){
             }
             for(let i = 0;i<Allsockets.length;i++)
             {
-                if(roomId_final == Allsockets[i].roomId)
+                if(roomId_final == Allsockets[i].roomId && socket!=Allsockets[i].socket)
                 {
                     Allsockets[i].socket.send(messageParse.payload.message);
                 }

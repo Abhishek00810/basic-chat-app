@@ -8,6 +8,7 @@ wss.on('connection', function (socket) {
     socket.on("message", function (message) {
         const messageString = message.toString();
         const messageParse = JSON.parse(messageString);
+        console.log(messageParse);
         if (messageParse.type == "join") {
             Allsockets.push({
                 socket: socket,
@@ -16,15 +17,13 @@ wss.on('connection', function (socket) {
         }
         else {
             let roomId_final = "";
-            console.log(Allsockets.length);
             for (let i = 0; i < Allsockets.length; i++) {
-                console.log("HEYT");
                 if (Allsockets[i].socket === socket) {
                     roomId_final = Allsockets[i].roomId;
                 }
             }
             for (let i = 0; i < Allsockets.length; i++) {
-                if (roomId_final == Allsockets[i].roomId) {
+                if (roomId_final == Allsockets[i].roomId && socket != Allsockets[i].socket) {
                     Allsockets[i].socket.send(messageParse.payload.message);
                 }
             }
